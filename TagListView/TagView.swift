@@ -10,7 +10,7 @@ import UIKit
 
 @IBDesignable
 open class TagView: UIButton {
-
+    
     @IBInspectable open var cornerRadius: CGFloat = 0 {
         didSet {
             layer.cornerRadius = cornerRadius
@@ -51,7 +51,7 @@ open class TagView: UIButton {
             updateRightInsets()
         }
     }
-
+    
     @IBInspectable open var tagBackgroundColor: UIColor = UIColor.gray {
         didSet {
             reloadStyles()
@@ -79,6 +79,9 @@ open class TagView: UIButton {
     var textFont: UIFont = UIFont.systemFont(ofSize: 12) {
         didSet {
             titleLabel?.font = textFont
+            titleLabel?.numberOfLines = 0
+            titleLabel?.lineBreakMode = .byTruncatingMiddle
+            titleLabel?.textAlignment = .left
         }
     }
     
@@ -176,7 +179,7 @@ open class TagView: UIButton {
     }
     
     // MARK: - layout
-
+    
     override open var intrinsicContentSize: CGSize {
         var size = titleLabel?.text?.size(attributes: [NSFontAttributeName: textFont]) ?? CGSize.zero
         size.height = textFont.pointSize + paddingY * 2
@@ -186,6 +189,10 @@ open class TagView: UIButton {
         }
         if enableRemoveButton {
             size.width += removeButtonIconSize + paddingX
+        }
+        if size.width > UIScreen.main.bounds.width - 32 {
+            size.width = UIScreen.main.bounds.width - 32
+            size.height += textFont.pointSize + paddingY * 2
         }
         return size
     }
